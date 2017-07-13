@@ -13,8 +13,17 @@ import android.widget.Button;
 *  Relevant ViewHolder and Adapter*/
 public class BeatBoxFragment extends Fragment {
 
+    private BeatBox mBeatBox;
+
     public static BeatBoxFragment newInstance() {
         return new BeatBoxFragment();
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        mBeatBox = new BeatBox(getActivity());
     }
 
     @Override
