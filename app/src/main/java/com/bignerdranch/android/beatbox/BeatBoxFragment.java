@@ -25,6 +25,9 @@ public class BeatBoxFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        //Enable instance retention on rotation
+        setRetainInstance(true);
+
         mBeatBox = new BeatBox(getActivity());
     }
 
@@ -41,8 +44,14 @@ public class BeatBoxFragment extends Fragment {
         return view;
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mBeatBox.release();
+    }
+
     /* ViewHolder */
-    private class SoundHolder extends RecyclerView.ViewHolder {
+    private class SoundHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         private Button mButton;
         private Sound mSound;
@@ -51,12 +60,18 @@ public class BeatBoxFragment extends Fragment {
             super(inflater.inflate(R.layout.list_item_sound, container, false));
 
             mButton = (Button) itemView.findViewById(R.id.list_item_sound_button);
+            mButton.setOnClickListener(this);
         }
 
         //Bind given sound object to ViewHolder
         public void bindSound(Sound sound) {
             mSound = sound;
             mButton.setText(mSound.getName());
+        }
+
+        @Override
+        public void onClick(View v) {
+            mBeatBox.play(mSound);
         }
 
     }
